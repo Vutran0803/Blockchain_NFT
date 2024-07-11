@@ -1,6 +1,6 @@
-package com.example.demo.entity;
+package com.othree.entyti;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -11,12 +11,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "NFT")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ToString
 public class NFT {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

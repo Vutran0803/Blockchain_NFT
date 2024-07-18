@@ -55,5 +55,10 @@ public class HomeController {
 	public String login() {
 		return "Othree/login";
 	}
+	@GetMapping("/marketplace")
+	public String mar() {
+		return "Othree/marketplace";
+	}
+
 
 }

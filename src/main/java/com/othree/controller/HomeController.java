@@ -1,10 +1,20 @@
 package com.othree.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.othree.dao.ImageNFTDao;
+import com.othree.entity.ImageNFT;
 
 @Controller
 public class HomeController {
+	
+	@Autowired
+    private ImageNFTDao dao;
 
 	@GetMapping("/index")
 	public String index() {
@@ -56,9 +66,16 @@ public class HomeController {
 		return "Othree/login";
 	}
 	@GetMapping("/marketplace")
-	public String mar() {
-		return "Othree/marketplace";
+	public String getNFTMarketplace(Model model) {
+	    List<ImageNFT> nfts = dao.findAll();
+	    model.addAttribute("nfts", nfts);
+	    return "Othree/marketplace";
 	}
+
+	
+
+
+   
 
 
 }

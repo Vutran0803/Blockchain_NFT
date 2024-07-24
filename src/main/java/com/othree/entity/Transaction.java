@@ -1,43 +1,33 @@
 package com.othree.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.ToString;
-import java.util.Date;
 
+import lombok.Data;
+
+import java.util.Date;
+import java.util.Set;
+
+@Data
 @Entity
-@Table(name = "[Transaction]")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ToString
+@Table(name = "Transactions")
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int transactionId;
+    private Integer transactionsId;
 
-    @ManyToOne
-    @JoinColumn(name = "buyerId", nullable = false)
-    private Account buyer;
-
-    @ManyToOne
-    @JoinColumn(name = "sellerId", nullable = false)
-    private Account seller;
-
-    @ManyToOne
-    @JoinColumn(name = "nftId", nullable = false)
-    private NFT nft;
+    private String username;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
-    private Date transactionDate;
+    private Date transactionsDate = new Date();
 
-    @Column(nullable = false)
-    private double amount;
+    private String transactionsdetails;
+
+    @ManyToOne
+    @JoinColumn(name = "username", referencedColumnName = "username", insertable = false, updatable = false)
+    private Account account;
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    private Set<TransactionsDetail> transactionsDetails;
+
+    // Getters and Setters
 }

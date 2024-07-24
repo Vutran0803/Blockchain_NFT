@@ -1,54 +1,42 @@
 package com.othree.entity;
 
-
 import javax.persistence.*;
 
-import java.util.List;
+import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Set;
 
+
+@Data
 @Entity
-@Table(name = "Account")
-
-public class Account {
+@Table(name = "Accounts")
+public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accountId;
+    private Integer accountId;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 100)
-    private String email;
-
-    @OneToMany(mappedBy = "account")
-    private List<UserRole> userRoles;
-
-    @OneToMany(mappedBy = "account")
-    private List<Wallet> wallets;
-
-    @OneToMany(mappedBy = "owner")
-    private List<NFT> nfts;
-
-    @OneToMany(mappedBy = "buyer")
-    private List<Transaction> transactionsAsBuyer;
-
-    @OneToMany(mappedBy = "seller")
-    private List<Transaction> transactionsAsSeller;
-
-    @OneToMany(mappedBy = "account")
-    private List<Review> reviews;
-
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Customer customer;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private Set<Authorities> authorities;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private Set<ImageNFT> imageNFTs;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private Set<Transaction> transactions;
+
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private Set<Comment> comments;
+
+    // Getters and Setters
 }
+

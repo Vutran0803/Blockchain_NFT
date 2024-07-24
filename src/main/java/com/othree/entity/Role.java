@@ -1,30 +1,24 @@
 package com.othree.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.ToString;
-import java.util.List;
 
+import lombok.Data;
+
+import java.util.Set;
+
+@Data
 @Entity
-@Table(name = "Role")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ToString
+@Table(name = "Roles")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int roleId;
+    private Integer roleId;
 
-    @Column(nullable = false, length = 50)
-    private String roleName;
+    @Column(nullable = false, unique = true)
+    private String rolename;
 
-    @OneToMany(mappedBy = "role")
-    private List<UserRole> userRoles;
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    private Set<Authorities> authorities;
+
+    // Getters and Setters
 }

@@ -1,43 +1,26 @@
 package com.othree.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.ToString;
-import java.util.Date;
 
+import lombok.Data;
+
+@Data
 @Entity
 @Table(name = "Customer")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@ToString
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int customerId;
+    private Integer accountId;
 
     @OneToOne
-    @JoinColumn(name = "accountId", nullable = false)
+    @MapsId
+    @JoinColumn(name = "accountId")
     private Account account;
 
-    @Column(nullable = false, length = 50)
-    private String firstName;
+    private String fullname;
+    private String email;
+    private String photo;
+    private String phone;
+    private String walletkey;
 
-    @Column(nullable = false, length = 50)
-    private String lastName;
-
-    @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
-
-    @Column(length = 255)
-    private String address;
-
-    @Column(length = 20)
-    private String phoneNumber;
+    // Getters and Setters
 }

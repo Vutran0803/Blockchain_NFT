@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace=~{layout/head}></head>
 
@@ -29,16 +29,23 @@
     </div>
     <!-- Header End -->
 
-	<div class="container">
-		<div class="card bg-dark" style="width: 18rem;">
-		  <img src="img/money-coin-vector.png" class="card-img-top" alt="...">
-		  <div class="card-body">
-		    <h5 class="card-title">Card title</h5>
-		    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-		    <a href="#" class="btn btn-primary">Buy</a>
-		  </div>
-	</div>
-   <!--  <h1 class="marketplace-heading">NFT Marketplace</h1>
+	  <div class="container">
+        <div class="row g-3"> <!-- g-3 adds spacing between rows and columns -->
+            <div class="col-md-3" th:each="imageNFT : ${nfts}"> <!-- col-md-3 for 4 items per row -->
+                <div class="card bg-dark" style="width: 100%;">
+                    <img th:src="@{/img/{image}(image=${imageNFT.image})}" class="card-img-top" alt="NFT Image">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${imageNFT.name}">NFT Name</h5>
+                        <p class="card-price card-me" th:text="'Price: ' + ${imageNFT.price} + ' USD'">Price: 45 USD</p>
+                        <a href="#" class="btn btn-primary">Buy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+  <!--  <h1 class="marketplace-heading">NFT Marketplace</h1>
     <div id="nft-list" class="nft-list"></div>
     <div id="message" class="loading"></div>
 
@@ -56,11 +63,11 @@
     <div id="failedModal" class="failed-modal">
       <p>Purchase Failed!</p>
       <button id="closeFailedModal" class="modal-btn">Close</button>
-    </div>  -->
+    </div>   -->
   </div>
 	
     <!-- Features Start -->
-    <div class="container-xxl py-5">
+   <!--  <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
                 <h1 class="display-6">Why Us!</h1>
@@ -124,7 +131,7 @@
             </div>
         </div>
     </div>
-    <!-- Features End -->
+    Features End -->
 
 
     <div th:replace=~{layout/footer}></div>

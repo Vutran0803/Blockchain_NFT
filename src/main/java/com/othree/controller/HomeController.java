@@ -32,15 +32,26 @@ public class HomeController {
 	}
 
 	@GetMapping("/myNFTs")
-	public String roadmap() {
+	public String myNFTs() {
 		return "Othree/myNFTs";
+	}
+	@GetMapping("//marketplace")
+	public String marketplace() {
+		return "Othree/marketplace";
 	}
 
 	@GetMapping("/service")
 	public String service() {
 		return "Othree/service";
 	}
-
+	@GetMapping("/transfer")
+	public String transfer() {
+		return "Othree/transfer";
+	}
+	@GetMapping("/transferSOL")
+	public String transferSOL() {
+		return "Othree/transferSOL";
+	}
 	@GetMapping("/createNFT")
 	public String token() {
 		return "Othree/createNFT";

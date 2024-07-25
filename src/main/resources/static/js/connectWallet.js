@@ -88,3 +88,5 @@ function hideForm() {
     document.getElementById('connectMessage').style.display = 'block';
     document.querySelectorAll('#formContainer').forEach(el => el.style.display = 'none');
 }
+
+document.getElementById('walletButton').addEventListener('click', connectAndSignButtonClicked);

@@ -2,6 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace=~{layout/head}></head>
+<style>
+    
+.card {
+    transition: transform 0.3s; 
+}
+
+.card:hover {
+    transform: scale(1.05); 
+}
+
+</style>
 
 <body>
     <div th:replace=~{layout/header}></div>
@@ -29,20 +40,26 @@
     </div>
     <!-- Header End -->
 
-	  <div class="container">
-        <div class="row g-3"> <!-- g-3 adds spacing between rows and columns -->
-            <div class="col-md-3" th:each="imageNFT : ${nfts}"> <!-- col-md-3 for 4 items per row -->
-                <div class="card bg-dark" style="width: 100%;">
-                    <img th:src="@{/img/{image}(image=${imageNFT.image})}" class="card-img-top" alt="NFT Image">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${imageNFT.name}">NFT Name</h5>
-                        <p class="card-price card-me" th:text="'Price: ' + ${imageNFT.price} + ' USD'">Price: 45 USD</p>
-                        <a href="#" class="btn btn-primary">Buy</a>
-                    </div>
+	<div class="container">
+   <div class="row g-3">
+    <div class="col-md-3" th:each="imageNFT : ${nfts}">
+        <div class="card bg-dark" style="width: 100%;">
+            <img th:src="@{/img/{image}(image=${imageNFT.image})}" class="card-img-top" alt="NFT Image">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${imageNFT.name}">NFT Name</h5>
+                <p class="card-price card-me" th:text="'Price: ' + ${imageNFT.price} + ' USD'"></p>
+                <div>
+                    <a th:href="@{/productDetail/{id}(id=${imageNFT.nftId})}" class="btn btn-primary">Detail</a>
+                    <a href="#" class="btn btn-primary">Buy Now</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+</div>
+
+
 
 
   <!--  <h1 class="marketplace-heading">NFT Marketplace</h1>

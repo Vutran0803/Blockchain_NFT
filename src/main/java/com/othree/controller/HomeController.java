@@ -21,6 +21,10 @@ public class HomeController {
     public String index() {
         return "Othree/index";
     }
+    @GetMapping("/listnft")
+    public String List() {
+        return "Othree/listNFT";
+    }
 
     @GetMapping("/contact")
     public String contact() {

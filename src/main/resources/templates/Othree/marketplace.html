@@ -30,108 +30,13 @@
     <!-- Header End -->
 
 	  <div class="container">
-        <div class="row g-3"> <!-- g-3 adds spacing between rows and columns -->
-            <div class="col-md-3" th:each="imageNFT : ${nfts}"> <!-- col-md-3 for 4 items per row -->
-                <div class="card bg-dark" style="width: 100%;">
-                    <img th:src="@{/img/{image}(image=${imageNFT.image})}" class="card-img-top" alt="NFT Image">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${imageNFT.name}">NFT Name</h5>
-                        <p class="card-price card-me" th:text="'Price: ' + ${imageNFT.price} + ' USD'">Price: 45 USD</p>
-                        <a href="#" class="btn btn-primary">Buy</a>
-                    </div>
-                </div>
-            </div>
+        <div class="row g-3" id="nft-container">
+            <!-- NFT items will be injected here by JavaScript -->
         </div>
     </div>
 
 
-  <!--  <h1 class="marketplace-heading">NFT Marketplace</h1>
-    <div id="nft-list" class="nft-list"></div>
-    <div id="message" class="loading"></div>
-
-    <div id="buyModal" class="buy-modal">
-      <p>Are you sure you want to buy this NFT?</p>
-      <button id="confirmBuy" class="modal-btn">Yes</button>
-      <button id="closeBuyModal" class="modal-btn">No</button>
-    </div>
-
-    <div id="successModal" class="success-modal">
-      <p>Purchase Successful!</p>
-      <button id="closeSuccessModal" class="modal-btn">Close</button>
-    </div>
-
-    <div id="failedModal" class="failed-modal">
-      <p>Purchase Failed!</p>
-      <button id="closeFailedModal" class="modal-btn">Close</button>
-    </div>   -->
-  </div>
-	
-    <!-- Features Start -->
-   <!--  <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
-                <h1 class="display-6">Why Us!</h1>
-                <p class="text-primary fs-5 mb-5">The Best In The crypto Industry</p>
-            </div>
-            <div class="row g-5">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="d-flex align-items-start">
-                        <img class="img-fluid flex-shrink-0" src="img/icon-7.png" alt="">
-                        <div class="ps-4">
-                            <h5 class="mb-3">Easy To Start</h5>
-                            <span>Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="d-flex align-items-start">
-                        <img class="img-fluid flex-shrink-0" src="img/icon-6.png" alt="">
-                        <div class="ps-4">
-                            <h5 class="mb-3">Safe & Secure</h5>
-                            <span>Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="d-flex align-items-start">
-                        <img class="img-fluid flex-shrink-0" src="img/icon-5.png" alt="">
-                        <div class="ps-4">
-                            <h5 class="mb-3">Affordable Plans</h5>
-                            <span>Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="d-flex align-items-start">
-                        <img class="img-fluid flex-shrink-0" src="img/icon-4.png" alt="">
-                        <div class="ps-4">
-                            <h5 class="mb-3">Secure Storage</h5>
-                            <span>Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="d-flex align-items-start">
-                        <img class="img-fluid flex-shrink-0" src="img/icon-3.png" alt="">
-                        <div class="ps-4">
-                            <h5 class="mb-3">Protected By Insurance</h5>
-                            <span>Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="d-flex align-items-start">
-                        <img class="img-fluid flex-shrink-0" src="img/icon-8.png" alt="">
-                        <div class="ps-4">
-                            <h5 class="mb-3">24/7 Support</h5>
-                            <span>Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    Features End -->
+  
 
 
     <div th:replace=~{layout/footer}></div>

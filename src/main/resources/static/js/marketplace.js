@@ -1,111 +1,77 @@
-document.addEventListener("DOMContentLoaded", function () {
-      const apiKey = 'your-api-key';
-      const endPoint = 'your-endpoint';
-      const marketplaceAddress = 'your-marketplace-address';
-      const walletId = 'your-wallet-id'; // Replace with actual wallet ID
+document.addEventListener('DOMContentLoaded', () => {
+  const nftContainer = document.getElementById('nft-container');
 
-      const nftList = document.getElementById('nft-list');
-      const message = document.getElementById('message');
-      const buyModal = document.getElementById('buyModal');
-      const successModal = document.getElementById('successModal');
-      const failedModal = document.getElementById('failedModal');
+  // Function to fetch NFTs from the API
+  const fetchNFTs = async () => {
+    const apiKey = 'YOUR_API_KEY';
+    const endPoint = 'YOUR_API_ENDPOINT';
+    const network = 'devnet';
+    const marketplaceAddress = 'YOUR_MARKETPLACE_ADDRESS';
 
-      const confirmBuy = document.getElementById('confirmBuy');
-      const closeBuyModal = document.getElementById('closeBuyModal');
-      const closeSuccessModal = document.getElementById('closeSuccessModal');
-      const closeFailedModal = document.getElementById('closeFailedModal');
+    const nftUrl = `${endPoint}marketplace/active_listings?network=${network}&marketplace_address=${marketplaceAddress}`;
 
-      let selectedNft = null;
+    try {
+      const response = await fetch(nftUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        },
+      });
 
-      async function fetchNfts() {
-        try {
-          const response = await fetch(`${endPoint}marketplace/active_listings?network=devnet&marketplace_address=${marketplaceAddress}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': apiKey,
-            }
-          });
-          const data = await response.json();
-          if (data.success) {
-            displayNfts(data.result);
-          } else {
-            message.textContent = 'Some error occurred';
-          }
-        } catch (error) {
-          message.textContent = error.message;
-        }
+      const data = await response.json();
+
+      if (data.success) {
+        return data.result;
+      } else {
+        throw new Error('Failed to fetch NFTs');
       }
+    } catch (error) {
+      console.error('Error fetching NFTs:', error);
+      return [];
+    }
+  };
 
-      function displayNfts(nfts) {
-        message.textContent = '';
-        nfts.forEach(nft => {
-          const nftCard = document.createElement('div');
-          nftCard.className = 'nft-card';
-          nftCard.innerHTML = `
-            <img src="${nft.image_uri}" alt="NFT Image">
-            <p>${nft.name}</p>
-            <button class="buy-btn" data-address="${nft.nft_address}" data-price="${nft.price}" data-seller="${nft.seller_address}">Buy</button>
-          `;
-          nftList.appendChild(nftCard);
-        });
+  // Function to create NFT card
+  const createNFTCard = (nft) => {
+    const nftItem = document.createElement('div');
+    nftItem.classList.add('nft-item');
 
-        document.querySelectorAll('.buy-btn').forEach(button => {
-          button.addEventListener('click', () => {
-            selectedNft = {
-              address: button.dataset.address,
-              price: button.dataset.price,
-              seller: button.dataset.seller,
-            };
-            buyModal.classList.add('modal-show');
-          });
-        });
-      }
+    const nftImage = document.createElement('img');
+    nftImage.src = nft.image_uri;
+    nftImage.alt = nft.name;
 
-      async function buyNft() {
-        try {
-          const response = await fetch(`${endPoint}marketplace/buy`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-api-key': apiKey,
-            },
-            body: JSON.stringify({
-              network: 'devnet',
-              marketplace_address: marketplaceAddress,
-              nft_address: selectedNft.address,
-              price: Number(selectedNft.price),
-              seller_address: selectedNft.seller,
-              buyer_wallet: walletId,
-            }),
-          });
-          const data = await response.json();
-          if (data.success) {
-            successModal.classList.add('modal-show');
-          } else {
-            failedModal.classList.add('modal-show');
-          }
-        } catch (error) {
-          failedModal.classList.add('modal-show');
-        }
-      }
+    const nftTitle = document.createElement('h2');
+    nftTitle.textContent = nft.name;
 
-      confirmBuy.addEventListener('click', () => {
-        buyModal.classList.remove('modal-show');
-        buyNft();
-      });
+    const nftPrice = document.createElement('p');
+    nftPrice.textContent = `${nft.price} SOL`;
 
-      closeBuyModal.addEventListener('click', () => {
-        buyModal.classList.remove('modal-show');
-      });
-
-      closeSuccessModal.addEventListener('click', () => {
-        successModal.classList.remove('modal-show');
-      });
-
-      closeFailedModal.addEventListener('click', () => {
-        failedModal.classList.remove('modal-show');
-      });
-
-      fetchNfts();
+    const buyButton = document.createElement('button');
+    buyButton.textContent = 'Buy';
+    buyButton.addEventListener('click', () => {
+      alert(`Buying ${nft.name} for ${nft.price} SOL`);
+      // Implement buy functionality here
     });
+
+    nftItem.appendChild(nftImage);
+    nftItem.appendChild(nftTitle);
+    nftItem.appendChild(nftPrice);
+    nftItem.appendChild(buyButton);
+
+    return nftItem;
+  };
+
+  // Function to render NFTs
+  const renderNFTs = async () => {
+    const nfts = await fetchNFTs();
+
+    nfts.forEach((nft) => {
+      const nftCard = createNFTCard(nft);
+      nftContainer.appendChild(nftCard);
+    });
+  };
+
+  // Initial render
+  renderNFTs();
+});

@@ -1,6 +1,7 @@
 let isConnected = false;
 let publicKey = null;
 let base64Signature = null;
+let disconnectTimeout = null;
 
 // Check local storage for connection status, public key, and signature
 window.addEventListener('load', () => {
@@ -13,6 +14,7 @@ window.addEventListener('load', () => {
         console.log('Connected with public key:', publicKey);
         console.log('Message signed (Base64):', base64Signature);
         displayForm();
+        startDisconnectTimer();
     } else {
         hideForm();
     }
@@ -46,6 +48,9 @@ const connectWallet = async () => {
         // Store the signed message and its Base64 signature in local storage
         localStorage.setItem('base64Signature', base64Signature);
         displayForm();
+
+        // Start disconnect timer
+        startDisconnectTimer();
     } catch (error) {
         console.error('Failed to connect and sign message:', error);
     }
@@ -65,6 +70,10 @@ const disconnectWallet = async () => {
         localStorage.removeItem('publicKey');
         localStorage.removeItem('base64Signature');
         hideForm();
+
+        // Clear the disconnect timer
+        clearTimeout(disconnectTimeout);
+        disconnectTimeout = null;
     } catch (error) {
         console.error('Failed to disconnect from Phantom wallet:', error);
     }
@@ -87,4 +96,15 @@ function displayForm() {
 function hideForm() {
     document.getElementById('connectMessage').style.display = 'block';
     document.querySelectorAll('#formContainer').forEach(el => el.style.display = 'none');
+}
+
+function startDisconnectTimer() {
+    // Clear any existing timer
+    if (disconnectTimeout) {
+        clearTimeout(disconnectTimeout);
+    }
+    // Set a new timer to disconnect after 3 hours (10800000 milliseconds)
+    disconnectTimeout = setTimeout(() => {
+        disconnectWallet();
+    }, 10800000);
 }

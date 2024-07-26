@@ -45,6 +45,14 @@ public class HomeController {
 	public String roadmap() {
 		return "Othree/myNFTs";
 	}
+	@GetMapping("/transfer")
+	public String transfer() {
+		return "Othree/transfer";
+	}
+	@GetMapping("/transferSOL")
+	public String transferSOL() {
+		return "Othree/transferSOL";
+	}
 
 	@GetMapping("/service")
 	public String service() {

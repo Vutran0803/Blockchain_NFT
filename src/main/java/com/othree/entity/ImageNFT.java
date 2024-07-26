@@ -11,27 +11,26 @@ import lombok.Data;
 public class ImageNFT {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "NftID") // specify the exact column name
     private Integer nftId;
 
-    @Column(nullable = false)
+    @Column(name = "Name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "Price", nullable = false)
     private float price;
 
     @Lob
+    @Column(name = "Image")
     private String image; // Use @Lob for binary data
 
-    @Column(nullable = false)
+    @Column(name = "Username", nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "Quantity", nullable = false)
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "username", referencedColumnName = "username", insertable = false, updatable = false)
+    @JoinColumn(name = "Username", referencedColumnName = "Username", insertable = false, updatable = false)
     private Account account;
-
-    // Getters and Setters
 }
-

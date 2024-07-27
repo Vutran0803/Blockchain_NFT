@@ -1,10 +1,7 @@
-let isConnected = false;
-let publicKey = null;
-let base64Signature = null;
-let disconnectTimeout = null;
+document.addEventListener('DOMContentLoaded', function () {
+    const getKeyButton = document.getElementById('getKeyButton');
+    getKeyButton.addEventListener('click', setKeyInInput);
 
-// Check local storage for connection status, public key, and signature
-window.addEventListener('load', () => {
     if (localStorage.getItem('isConnected') === 'true') {
         isConnected = true;
         publicKey = localStorage.getItem('publicKey');
@@ -26,30 +23,23 @@ const connectWallet = async () => {
         publicKey = response.publicKey.toString();
         console.log('Connected with public key:', publicKey);
 
-        // Change the button text to "Disconnect Wallet"
         const connectButton = document.getElementById('walletButton');
         connectButton.textContent = 'Disconnect Wallet';
         isConnected = true;
 
-        // Store connection status and public key in local storage
         localStorage.setItem('isConnected', 'true');
         localStorage.setItem('publicKey', publicKey);
 
-        // Sign the message
         const message = 'Hello, Phantom!';
         const encodedMessage = new TextEncoder().encode(message);
         const signedMessage = await window.phantom.solana.signMessage(encodedMessage, 'utf8');
         const signature = signedMessage.signature;
 
-        // Convert the signature to Base64
         base64Signature = btoa(String.fromCharCode(...new Uint8Array(signature)));
         console.log('Message signed (Base64):', base64Signature);
 
-        // Store the signed message and its Base64 signature in local storage
         localStorage.setItem('base64Signature', base64Signature);
         displayForm();
-
-        // Start disconnect timer
         startDisconnectTimer();
     } catch (error) {
         console.error('Failed to connect and sign message:', error);
@@ -65,13 +55,11 @@ const disconnectWallet = async () => {
         publicKey = null;
         base64Signature = null;
 
-        // Remove connection status, public key, and signature from local storage
         localStorage.removeItem('isConnected');
         localStorage.removeItem('publicKey');
         localStorage.removeItem('base64Signature');
         hideForm();
 
-        // Clear the disconnect timer
         clearTimeout(disconnectTimeout);
         disconnectTimeout = null;
     } catch (error) {
@@ -99,12 +87,19 @@ function hideForm() {
 }
 
 function startDisconnectTimer() {
-    // Clear any existing timer
     if (disconnectTimeout) {
         clearTimeout(disconnectTimeout);
     }
-    // Set a new timer to disconnect after 3 hours (10800000 milliseconds)
     disconnectTimeout = setTimeout(() => {
         disconnectWallet();
     }, 10800000);
+}
+
+function setKeyInInput() {
+    if (isConnected && publicKey) {
+        const keyInput = document.getElementById('recipient');
+        keyInput.value = publicKey;
+    } else {
+        console.log('Wallet not connected');
+    }
 }

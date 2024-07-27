@@ -21,7 +21,10 @@ public class Account implements Serializable {
 
     @Column(nullable = false)
     private String password;
-
+    
+    @Column(nullable = false)
+    private String key_wallet;
+    
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Customer customer;
 

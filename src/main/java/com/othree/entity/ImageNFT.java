@@ -3,10 +3,14 @@ package com.othree.entity;
 import java.math.BigDecimal;
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "ImageNFT")
 public class ImageNFT {
     @Id
@@ -19,6 +23,9 @@ public class ImageNFT {
 
     @Column(name = "Price", nullable = false)
     private float price;
+    
+    @Column(name = "key_wallet", nullable = false)
+    private String keyWallet;
 
     @Lob
     @Column(name = "Image")

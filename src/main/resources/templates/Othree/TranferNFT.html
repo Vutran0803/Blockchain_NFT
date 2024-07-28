@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer NFTs</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            width: 300px;
+        }
+        .card img {
+            max-width: 300px;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container border border-2 border-primary p-3 mt-5">
+        <div class="row pt-2">
+            <div class="col-sm-5">
+                <select class="form-control form-select" id="network">
+                    <option value="devnet">Devnet</option>
+                    <option value="testnet">TestNet</option>
+                    <option value="mainnet-beta">Mainnet</option>
+                </select>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" placeholder="Enter Your Wallet Address" id="address">
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary w-100" onclick="getNFTs()">Get NFTs</button>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="Enter Receiver Wallet Address" id="sendAddr">
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-info w-100" onclick="startListing()">Transfer</button>
+            </div>
+        </div>
+    </div>
+    <div class="container text-center py-4">
+        <h5 class="display-5">All Your NFTs from your wallet</h5>
+        <p class="lead text-success"><b id="selectedCount">0</b> NFT(s) selected</p>
+    </div>
+    <div class="container pt-4">
+        <div class="row" id="nftList"></div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        let nfts = [];
+        let transferArr = [];
+
+        function getNFTs() {
+            const xKey = "0ZZi5a0Eo89-knJM"; // Nhập API Key của bạn ở đây
+            const network = document.getElementById("network").value;
+            const address = document.getElementById("address").value;
+
+            let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${address}`;
+
+            axios({
+                url: nftUrl,
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": xKey,
+                },
+            })
+            .then((res) => {
+                if (res.data.success === true) {
+                    nfts = res.data.result;
+                    displayNFTs();
+                } else {
+                    console.warn("API response was not successful", res.data);
+                }
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+        }
+
+        function displayNFTs() {
+            const nftList = document.getElementById("nftList");
+            nftList.innerHTML = "";
+
+            nfts.forEach((nft) => {
+                const nftCard = `
+                    <div class="col-md-3">
+                        <div class="card mb-5">
+                            <img class="card-img-top" src="${nft.cached_image_uri}" alt="Card">
+                            <div class="card-body">
+                                <h4 class="card-title lead"><b>${nft.name}</b></h4>
+                                <button class="btn btn-primary" onclick="addToList('${nft.mint}')">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                nftList.insertAdjacentHTML('beforeend', nftCard);
+            });
+        }
+
+        function addToList(item) {
+            transferArr.push(item);
+            document.getElementById("selectedCount").innerText = transferArr.length;
+        }
+
+        function startListing() {
+            const xKey = "0ZZi5a0Eo89-knJM"; // Nhập API Key của bạn ở đây
+            const network = document.getElementById("network").value;
+            const address = document.getElementById("address").value;
+            const sendAddr = document.getElementById("sendAddr").value;
+
+            axios({
+                url: `https://api.shyft.to/sol/v1/nft/transfer_many`,
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": xKey,
+                },
+                data: {
+                    network: network,
+                    token_addresses: transferArr,
+                    from_address: address,
+                    to_address: sendAddr,
+                },
+            })
+            .then((res) => {
+                if (res.data.success === true) {
+                    const transactions = res.data.result.encoded_transactions;
+                    console.log("Transactions ready to be signed:", transactions);
+                } else {
+                    console.warn("API response was not successful", res.data);
+                }
+            })
+            .catch((err) => {
+                console.warn(err);
+            });
+        }
+    </script>
+</body>
+</html>

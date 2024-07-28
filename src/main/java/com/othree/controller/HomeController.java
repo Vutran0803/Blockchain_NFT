@@ -82,6 +82,11 @@ public class HomeController {
     public String login() {
         return "Othree/login";
     }
+    @GetMapping("/Tranf")
+    public String tranf() {
+        return "Othree/TranferNFT";
+    }
+
 
     @GetMapping("/marketplace")
     public String getNFTMarketplace(Model model) {

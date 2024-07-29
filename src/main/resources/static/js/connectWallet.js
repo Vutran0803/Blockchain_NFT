@@ -1,7 +1,10 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const getKeyButton = document.getElementById('getKeyButton');
-    getKeyButton.addEventListener('click', setKeyInInput);
+let isConnected = false;
+let publicKey = null;
+let base64Signature = null;
+let disconnectTimeout = null;
 
+// Check local storage for connection status, public key, and signature on page load
+window.addEventListener('load', () => {
     if (localStorage.getItem('isConnected') === 'true') {
         isConnected = true;
         publicKey = localStorage.getItem('publicKey');
@@ -23,21 +26,26 @@ const connectWallet = async () => {
         publicKey = response.publicKey.toString();
         console.log('Connected with public key:', publicKey);
 
+        // Change the button text to "Disconnect Wallet"
         const connectButton = document.getElementById('walletButton');
         connectButton.textContent = 'Disconnect Wallet';
         isConnected = true;
 
+        // Store connection status and public key in local storage
         localStorage.setItem('isConnected', 'true');
         localStorage.setItem('publicKey', publicKey);
 
+        // Sign the message
         const message = 'Hello, Phantom!';
         const encodedMessage = new TextEncoder().encode(message);
         const signedMessage = await window.phantom.solana.signMessage(encodedMessage, 'utf8');
         const signature = signedMessage.signature;
 
+        // Convert the signature to Base64
         base64Signature = btoa(String.fromCharCode(...new Uint8Array(signature)));
         console.log('Message signed (Base64):', base64Signature);
 
+        // Store the signed message and its Base64 signature in local storage
         localStorage.setItem('base64Signature', base64Signature);
         displayForm();
         startDisconnectTimer();
@@ -55,6 +63,7 @@ const disconnectWallet = async () => {
         publicKey = null;
         base64Signature = null;
 
+        // Remove connection status, public key, and signature from local storage
         localStorage.removeItem('isConnected');
         localStorage.removeItem('publicKey');
         localStorage.removeItem('base64Signature');
@@ -103,3 +112,8 @@ function setKeyInInput() {
         console.log('Wallet not connected');
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const getKeyButton = document.getElementById('getKeyButton');
+    getKeyButton.addEventListener('click', setKeyInInput);
+});

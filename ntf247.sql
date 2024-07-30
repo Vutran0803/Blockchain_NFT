@@ -115,12 +115,12 @@ INSERT INTO Roles (Rolename) VALUES
 ('USER'),
 ('ADMIN');
 GO
-
+use NFTMark;
 -- Insert data into Authorities
 INSERT INTO authorities (account_id, role_id) VALUES
 (1, 1),
 (2, 2);
-
+select * from authorities
 
 GO
 

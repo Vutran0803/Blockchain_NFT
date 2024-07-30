@@ -1,35 +1,29 @@
 package com.othree.entity;
 
-import java.io.Serializable;
-
-import javax.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "Authorities")
 public class Authorities {
-    @EmbeddedId
-    private AuthorityKey id;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer authoritieID;
     @ManyToOne
-    @MapsId("accountId")
-    @JoinColumn(name = "accountId")
+    @JoinColumn(name = "accountId", nullable = false)
     private Account account;
 
     @ManyToOne
-    @MapsId("roleId")
-    @JoinColumn(name = "roleId")
+    @JoinColumn(name = "roleId", nullable = false)
     private Role role;
 
-    // Getters and Setters
-}
-
-@Embeddable
-class AuthorityKey implements Serializable {
-    private Integer accountId;
-    private Integer roleId;
-
-    // Getters and Setters, hashCode, equals
+    // Constructors, Getters, and Setters
 }

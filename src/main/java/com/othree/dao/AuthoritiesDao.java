@@ -8,6 +8,6 @@ import com.othree.entity.Authorities;
 
 
 
-public interface AuthoritiesDao extends JpaRepository<Authorities, String>{
+public interface AuthoritiesDao extends JpaRepository<Authorities, Integer>{
 
 }

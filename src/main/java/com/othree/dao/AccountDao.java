@@ -6,4 +6,6 @@ import com.othree.entity.Account;
 
 public interface AccountDao extends JpaRepository<Account,Integer> {
 
+	Account findByUsernameAndPassword(String username, String password);
+
 }

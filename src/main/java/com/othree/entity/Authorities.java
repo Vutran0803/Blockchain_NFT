@@ -1,5 +1,8 @@
 package com.othree.entity;
 
+import java.io.Serializable;
+
+import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,4 +29,10 @@ public class Authorities {
     private Role role;
 
     // Constructors, Getters, and Setters
+    @Embeddable
+    public class AuthorityKey implements Serializable {
+        
+        private Integer accountId;
+        private Integer roleId;
+}
 }

@@ -52,7 +52,7 @@
                 <p class="card-price card-me" th:text="'Price: ' + ${imageNFT.price} + ' USD'"></p>
                 <div>
                     <a th:href="@{/productDetail/{id}(id=${imageNFT.nftId})}" class="btn btn-primary">Detail</a>
-                    <a th:href="@{/pay(id=${imageNFT.nftId})}" class="btn btn-primary">Buy Now</a>
+                    <a th:href="@{/thanhtoan(id=${imageNFT.nftId})}" class="btn btn-primary">Buy Now</a>
                 </div>
             </div>
         </div>

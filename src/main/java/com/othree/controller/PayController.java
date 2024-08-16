@@ -18,11 +18,11 @@ public class PayController {
     @Autowired
     private ImageNFTDao dao;
 
-    @GetMapping("/pay")
+    @GetMapping("/thanhtoan")
     public String showPayPage(Model model, @RequestParam("id") Integer id) {
         ImageNFT nft = dao.findById(id).orElse(null);
         model.addAttribute("nft", nft);
-        return "Othree/pay";
+        return "Othree/thanhtoan";
     }
 
     @PostMapping("/pay/submit")
